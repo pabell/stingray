@@ -92,10 +92,15 @@ class Crossspectrum(object):
         ## total number of photons is the sum of the
         ## counts in the light curve
         self.nphots1 = np.sum(lc1.counts)
+        print("nphots1: " + str(self.nphots1))
         self.nphots2 = np.sum(lc2.counts)
+        print("nphots2: " + str(self.nphots2))
+
 
         self.meancounts1 = np.mean(lc1.counts)
+        print("meancounts1: " + str(self.meancounts1))
         self.meancounts2 = np.mean(lc2.counts)
+        print("meancounts2: " + str(self.meancounts2))
 
         ## the number of data points in the light curve
         assert lc1.counts.shape[0] == lc2.counts.shape[0], \
@@ -143,8 +148,14 @@ class Crossspectrum(object):
         fourier_1 = scipy.fftpack.fft(lc1.counts)  # do Fourier transform 1
         fourier_2 = scipy.fftpack.fft(lc2.counts)  # do Fourier transform 2
 
+        print("fourier_1: " + str(fourier_1))
+        print("fourier_2: " + str(fourier_2))
+
         freqs = scipy.fftpack.fftfreq(lc1.counts.shape[0], lc1.dt)
         cross = fourier_1[freqs > 0] * np.conj(fourier_2[freqs > 0])
+
+        print("cross: " + str(cross))
+
         return freqs[freqs > 0], cross
 
 
@@ -213,24 +224,20 @@ class Crossspectrum(object):
                 "Mean count rate is <= 0. Something went wrong."
 
         if self.norm.lower() == 'leahy':
-            print("I am in Leahy normalization.")
             print("unnorm_powers in _normalize_crossspectrum are: " + str(unnorm_power.real))
             c = unnorm_power.real
             power = c * 2. / actual_nphots
             print("powers in _normalize_crossspectrum are: " + str(power))
 
         elif self.norm.lower() == 'frac':
-            print("I am in frac normalization.")
             c = unnorm_power.real / np.float(self.n**2.)
             power = c * 2. * tseg / (actual_mean**2.0)
 
         elif self.norm.lower() == 'abs':
-            print("I am in abs normalization.")
             c = unnorm_power.real / np.float(self.n**2.)
             power = c * (2. * tseg)
 
         elif self.norm.lower() == 'none':
-            print("I am in none normalization.")
             power = unnorm_power
 
         else:

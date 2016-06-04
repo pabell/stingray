@@ -208,11 +208,21 @@ class Crossspectrum(object):
 
         # The "effective" counst/bin is the geometrical mean of the counts/bin
         # of the two light curves
+        print("self.nphots1: " + str(self.nphots1))
+        print("self.nphots2: " + str(self.nphots2))
+
+        print("type(self.nphots1): " + str(type(self.nphots1)))
+        print("type(self.nphots2): " + str(type(self.nphots2)))
+
+        print("self.nphots1 * self.nphots2: " + str(self.nphots1 * self.nphots2))
+        print("np.sqrt(self.nphots1 * self.nphots2): " + str(np.sqrt(self.nphots1 * self.nphots2)))
+        print("np.float64(np.sqrt(self.nphots1 * self.nphots2)): " + str(np.float64(np.sqrt(self.nphots1 * self.nphots2))))
+
         actual_nphots = np.float64(np.sqrt(self.nphots1 * self.nphots2))
         actual_mean = np.sqrt(self.meancounts1 * self.meancounts2)
 
         print("actual_nphots: " + str(actual_nphots))
-        print("type(actual_nphots): " + str(actual_nphots))
+        print("type(actual_nphots): " + str(type(actual_nphots)))
 
         assert actual_mean > 0.0, \
                 "Mean count rate is <= 0. Something went wrong."

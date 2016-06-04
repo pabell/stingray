@@ -213,18 +213,24 @@ class Crossspectrum(object):
                 "Mean count rate is <= 0. Something went wrong."
 
         if self.norm.lower() == 'leahy':
+            print("I am in Leahy normalization.")
+            print("unnorm_powers in _normalize_crossspectrum are: " + str(unnorm_power.real))
             c = unnorm_power.real
             power = c * 2. / actual_nphots
+            print("powers in _normalize_crossspectrum are: " + str(power))
 
         elif self.norm.lower() == 'frac':
+            print("I am in frac normalization.")
             c = unnorm_power.real / np.float(self.n**2.)
             power = c * 2. * tseg / (actual_mean**2.0)
 
         elif self.norm.lower() == 'abs':
+            print("I am in abs normalization.")
             c = unnorm_power.real / np.float(self.n**2.)
             power = c * (2. * tseg)
 
         elif self.norm.lower() == 'none':
+            print("I am in none normalization.")
             power = unnorm_power
 
         else:

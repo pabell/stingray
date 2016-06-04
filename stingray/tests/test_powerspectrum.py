@@ -120,8 +120,6 @@ class TestPowerspectrum(object):
     def test_leahy_norm_correct(self):
         time = np.linspace(0, 10.0, 1e6)
         counts = np.random.poisson(1000, size=time.shape[0])
-        print("counts: " + str(counts))
-        print("type(counts[0]: " + str(type(counts[0])))
 
         lc = Lightcurve(time, counts)
         ps = Powerspectrum(lc, norm="leahy")

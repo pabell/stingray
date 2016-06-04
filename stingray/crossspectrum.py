@@ -93,12 +93,9 @@ class Crossspectrum(object):
         ## total number of photons is the sum of the
         ## counts in the light curve
         self.nphots1 = np.sum(lc1.counts)
-        print("nphots1: " + str(self.nphots1))
         self.nphots2 = np.sum(lc2.counts)
 
-
         self.meancounts1 = np.mean(lc1.counts)
-        print("meancounts1: " + str(self.meancounts1))
         self.meancounts2 = np.mean(lc2.counts)
 
         ## the number of data points in the light curve
@@ -147,13 +144,8 @@ class Crossspectrum(object):
         fourier_1 = scipy.fftpack.fft(lc1.counts)  # do Fourier transform 1
         fourier_2 = scipy.fftpack.fft(lc2.counts)  # do Fourier transform 2
 
-        print("fourier_1: " + str(fourier_1))
-        print("fourier_2: " + str(fourier_2))
-
         freqs = scipy.fftpack.fftfreq(lc1.counts.shape[0], lc1.dt)
         cross = fourier_1[freqs > 0] * np.conj(fourier_2[freqs > 0])
-
-        print("cross: " + str(cross))
 
         return freqs[freqs > 0], cross
 
@@ -216,15 +208,18 @@ class Crossspectrum(object):
 
         # The "effective" counst/bin is the geometrical mean of the counts/bin
         # of the two light curves
-        actual_nphots = np.sqrt(self.nphots1 * self.nphots2)
+        actual_nphots = np.float64(np.sqrt(self.nphots1 * self.nphots2))
         actual_mean = np.sqrt(self.meancounts1 * self.meancounts2)
+
+        print("actual_nphots: " + str(actual_nphots))
+        print("type(actual_nphots): " + str(actual_nphots))
 
         assert actual_mean > 0.0, \
                 "Mean count rate is <= 0. Something went wrong."
 
         if self.norm.lower() == 'leahy':
-            print("unnorm_powers in _normalize_crossspectrum are: " + str(unnorm_power.real))
             c = unnorm_power.real
+            print("c: " + str(c))
             power = c * 2. / actual_nphots
             print("powers in _normalize_crossspectrum are: " + str(power))
 

@@ -92,8 +92,8 @@ class Crossspectrum(object):
 
         ## total number of photons is the sum of the
         ## counts in the light curve
-        self.nphots1 = np.sum(lc1.counts)
-        self.nphots2 = np.sum(lc2.counts)
+        self.nphots1 = np.float64(np.sum(lc1.counts))
+        self.nphots2 = np.float64(np.sum(lc2.counts))
 
         self.meancounts1 = np.mean(lc1.counts)
         self.meancounts2 = np.mean(lc2.counts)

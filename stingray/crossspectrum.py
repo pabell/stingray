@@ -88,19 +88,18 @@ class Crossspectrum(object):
         assert isinstance(lc2, lightcurve.Lightcurve), \
                         "lc2 must be a lightcurve.Lightcurve object!"
 
+        print("lc1.counts: " + str(lc1.counts))
 
         ## total number of photons is the sum of the
         ## counts in the light curve
         self.nphots1 = np.sum(lc1.counts)
         print("nphots1: " + str(self.nphots1))
         self.nphots2 = np.sum(lc2.counts)
-        print("nphots2: " + str(self.nphots2))
 
 
         self.meancounts1 = np.mean(lc1.counts)
         print("meancounts1: " + str(self.meancounts1))
         self.meancounts2 = np.mean(lc2.counts)
-        print("meancounts2: " + str(self.meancounts2))
 
         ## the number of data points in the light curve
         assert lc1.counts.shape[0] == lc2.counts.shape[0], \

@@ -67,8 +67,6 @@ class Crossspectrum(object):
             if lc1 is not None or lc2 is not None:
                  raise TypeError("You can't do a cross spectrum with just one "
                          "light curve!")
-            # else:
-            #      print("Please specify input light curves!")
             self.freq = None
             self.power = None
             self.df = None
@@ -87,8 +85,6 @@ class Crossspectrum(object):
                         "lc1 must be a lightcurve.Lightcurve object!"
         assert isinstance(lc2, lightcurve.Lightcurve), \
                         "lc2 must be a lightcurve.Lightcurve object!"
-
-        print("lc1.counts: " + str(lc1.counts))
 
         ## total number of photons is the sum of the
         ## counts in the light curve
@@ -208,30 +204,19 @@ class Crossspectrum(object):
 
         # The "effective" counst/bin is the geometrical mean of the counts/bin
         # of the two light curves
-        print("self.nphots1: " + str(self.nphots1))
-        print("self.nphots2: " + str(self.nphots2))
 
-        print("type(self.nphots1): " + str(type(self.nphots1)))
-        print("type(self.nphots2): " + str(type(self.nphots2)))
+        log_nphots1 = np.log(self.nphots1)
+        log_nphots2 = np.log(self.nphots2)
 
-        print("self.nphots1 * self.nphots2: " + str(self.nphots1 * self.nphots2))
-        print("np.sqrt(self.nphots1 * self.nphots2): " + str(np.sqrt(self.nphots1 * self.nphots2)))
-        print("np.float64(np.sqrt(self.nphots1 * self.nphots2)): " + str(np.float64(np.sqrt(self.nphots1 * self.nphots2))))
-
-        actual_nphots = np.float64(np.sqrt(self.nphots1 * self.nphots2))
+        actual_nphots = np.float64(np.sqrt(np.exp(log_nphots1 + log_nphots2)))
         actual_mean = np.sqrt(self.meancounts1 * self.meancounts2)
-
-        print("actual_nphots: " + str(actual_nphots))
-        print("type(actual_nphots): " + str(type(actual_nphots)))
 
         assert actual_mean > 0.0, \
                 "Mean count rate is <= 0. Something went wrong."
 
         if self.norm.lower() == 'leahy':
             c = unnorm_power.real
-            print("c: " + str(c))
             power = c * 2. / actual_nphots
-            print("powers in _normalize_crossspectrum are: " + str(power))
 
         elif self.norm.lower() == 'frac':
             c = unnorm_power.real / np.float(self.n**2.)
@@ -360,8 +345,6 @@ class AveragedCrossspectrum(Crossspectrum):
         """
         self.type = "crossspectrum"
 
-        print(self.type)
-
         assert isinstance(norm, str), "norm is not a string!"
 
         assert norm.lower() in ["frac", "abs", "leahy", "none"], \
@@ -432,9 +415,7 @@ class AveragedCrossspectrum(Crossspectrum):
             ## be long
             for lc1_seg, lc2_seg in zip(lc1, lc2):
 
-                print("self.type: " + str(self.type))
                 if self.type == "crossspectrum":
-                    print("I am here!")
                     cs_sep, nphots1_sep, nphots2_sep = \
                         self._make_segment_spectrum(lc1_seg, lc2_seg,
                                                             self.segment_size)

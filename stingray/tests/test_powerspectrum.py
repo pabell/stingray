@@ -125,7 +125,7 @@ class TestPowerspectrum(object):
         ps = Powerspectrum(lc, norm="leahy")
         print(np.mean(ps.power[1:]))
 
-        assert np.isclose(np.mean(ps.power[1:]), 3.0, atol=0.01, rtol=0.01)
+        assert np.isclose(np.mean(ps.power[1:]), 2.0, atol=0.01, rtol=0.01)
 
     def test_leahy_norm_total_variance(self):
         """
@@ -373,8 +373,6 @@ class TestAveragedPowerspectrum(object):
             lc_all.append(lc)
 
         ps = AveragedPowerspectrum(lc_all, 10.0, norm="leahy")
-
-        print(np.mean(ps.power))
 
         assert np.isclose(np.mean(ps.power), 2.0, atol=1e-3, rtol=1e-3)
         assert np.isclose(np.std(ps.power), 2.0/np.sqrt(n), atol=0.1, rtol=0.1)
